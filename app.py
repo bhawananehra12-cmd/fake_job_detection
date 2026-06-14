@@ -258,8 +258,8 @@ if analyze:
 
         st.markdown("<br>", unsafe_allow_html=True)
 
-        sad_img_path = "sad.jpg" if os.path.exists("sad.jpg") else "images/sad.jpeg"
-        happy_img_path = "happy.jpg" if os.path.exists("happy.jpg") else "images/happy.jpeg"
+        sad_img_path = "sad.jpg" if os.path.exists("sad.jpg") else "sad.jpeg"
+        happy_img_path = "happy.jpg" if os.path.exists("happy.jpg") else "happy.jpeg"
 
         # 1 = FAKE (Fraudulent) job
         if prediction[0] == 1:
