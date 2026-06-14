@@ -20,14 +20,14 @@ with top1:
     logo1, logo2 = st.columns([1, 12])
 
     with logo1:
-        st.image("images/lock.jpg", width=45)
+        st.image("lock.jpg", width=45)
 
     with logo2:
         st.markdown("""
         <div style="
             font-size:42px;
             font-weight:900;
-            margin-top:-15px; /* SafeApply text perfectamente elevated */
+            margin-top:-15px; 
             margin-left:-45px; 
         ">
             <span style="color:#1565C0;">Safe</span><span style="color:#50C878;">Apply</span>
@@ -201,10 +201,10 @@ left, center, right = st.columns([1, 3, 1])
 # LEFT IMAGE (REAL JOB)
 with left:
     st.markdown('<div class="side-img-wrapper">', unsafe_allow_html=True)
-    if os.path.exists("images/real.jpg"):
-        st.image("images/real.jpg", use_container_width=True)
-    elif os.path.exists("images/real.jpeg"):
-        st.image("images/real.jpeg", use_container_width=True)
+    if os.path.exists("real.jpg"):
+        st.image("real.jpg", use_container_width=True)
+    elif os.path.exists("real.jpeg"):
+        st.image("real.jpeg", use_container_width=True)
     st.markdown('</div>', unsafe_allow_html=True)
 
 # CENTER CARD
@@ -228,10 +228,10 @@ We are hiring a Python Developer with Django, Machine Learning and Cloud experie
 # RIGHT IMAGE (FAKE JOB WITH CROP wrapper)
 with right:
     st.markdown('<div class="side-img-wrapper fake-crop-container">', unsafe_allow_html=True)
-    if os.path.exists("images/fake.jpg"):
-        st.image("images/fake.jpg", use_container_width=True)
-    elif os.path.exists("images/fake.jpeg"):
-        st.image("images/fake.jpeg", use_container_width=True)
+    if os.path.exists("fake.jpg"):
+        st.image("fake.jpg", use_container_width=True)
+    elif os.path.exists("fake.jpeg"):
+        st.image("fake.jpeg", use_container_width=True)
     st.markdown('</div>', unsafe_allow_html=True)
 
 # =========================
@@ -258,8 +258,8 @@ if analyze:
 
         st.markdown("<br>", unsafe_allow_html=True)
 
-        sad_img_path = "images/sad.jpg" if os.path.exists("images/sad.jpg") else "images/sad.jpeg"
-        happy_img_path = "images/happy.jpg" if os.path.exists("images/happy.jpg") else "images/happy.jpeg"
+        sad_img_path = "sad.jpg" if os.path.exists("images/sad.jpg") else "images/sad.jpeg"
+        happy_img_path = "happy.jpg" if os.path.exists("images/happy.jpg") else "images/happy.jpeg"
 
         # 1 = FAKE (Fraudulent) job
         if prediction[0] == 1:
