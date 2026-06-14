@@ -2,7 +2,7 @@
 
 **SafeApply** is a Machine Learning-powered web application designed to identify fraudulent or fake job postings. Using Natural Language Processing (NLP) and a balanced Random Forest Classifier, the system analyzes text descriptions of job openings to protect job seekers from employment scams.
 
-Live Link: [Your Streamlit App URL Here](https://share.streamlit.io/)
+Live Link: https://fakejobdetection-vdxwxpw9odjvty43jirjdk
 
 ---
 
