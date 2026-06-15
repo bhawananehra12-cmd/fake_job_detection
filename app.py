@@ -9,7 +9,7 @@ import re
 st.set_page_config(
     page_title="SafeApply",
     page_icon="🛡️",
-    layout="wide"  # <--- YAHAN CHANGE KIYA HAI (page_layout ko badalkar sirf layout kiya)
+    layout="wide"  
 )
 
 # =========================
@@ -83,22 +83,24 @@ button[title="View fullscreen"] {
     display: none !important;
 }
 
-/* Hero Section */
+/* Hero Section - Responsive Typography */
 .hero {
     text-align:center;
     padding:10px;
 }
 
 .hero-title {
-    font-size:60px;
+    font-size: clamp(32px, 5vw, 60px); /* Mobile me auto-scale hoga */
     font-weight:900;
+    line-height: 1.2;
 }
 
 .fake { color:#ff69b4; }
 
 .hero-sub {
-    font-size:20px;
+    font-size: clamp(14px, 2vw, 20px); /* Mobile me auto-scale hoga */
     font-weight:600;
+    margin-top: 8px;
 }
 
 /* Central Layout Elements */
@@ -123,13 +125,14 @@ button[title="View fullscreen"] {
 .side-img-wrapper img {
     border-radius: 12px;
     width: 100% !important;
+    height: auto !important;
 }
 
 /* Custom crop specialized exactly to trim fake image from bottom safely */
 .fake-crop-container img {
     object-fit: cover !important;
     object-position: top center !important;
-    height: 310px !important; 
+    max-height: 310px !important; 
 }
 
 /* Centering the result container layout wrapper */
@@ -142,33 +145,46 @@ button[title="View fullscreen"] {
 }
 
 /* Moderate Sized Result Layout Cards */
-.real-card-mod {
-    background:#10b981;
+.real-card-mod, .fake-card-mod {
     color:white;
     padding:12px 35px;
     border-radius:15px;
-    font-size:24px;
+    font-size: clamp(18px, 4vw, 24px); /* Responsive Result Font */
     font-weight:bold;
     display: inline-block;
     box-shadow: 0px 4px 12px rgba(0,0,0,0.15);
+    max-width: 90%;
 }
 
-.fake-card-mod {
-    background:#ef4444;
-    color:white;
-    padding:12px 35px;
-    border-radius:15px;
-    font-size:24px;
-    font-weight:bold;
-    display: inline-block;
-    box-shadow: 0px 4px 12px rgba(0,0,0,0.15);
-}
+.real-card-mod { background:#10b981; }
+.fake-card-mod { background:#ef4444; }
 
 .footer {
     margin-top:50px;
     text-align:center;
     font-size:18px;
     font-weight:600;
+}
+
+/* ============================================================
+   📱 MOBILE & TABLET RESPONSIVENESS (MEDIA QUERY)
+   ============================================================ */
+@media (max-width: 768px) {
+    /* Mobile me side images ko hide karenge taaki layout crush na ho */
+    .side-img-wrapper {
+        display: none !important;
+    }
+    
+    /* Padding thodi kam mobile ke liye */
+    .glass {
+        padding: 15px;
+        border-radius: 15px;
+    }
+    
+    /* Input area height adjusted for mobile screens */
+    .stTextArea textarea {
+        height: 220px !important;
+    }
 }
 </style>
 """, unsafe_allow_html=True)
@@ -271,7 +287,8 @@ if analyze:
             </div>
             """, unsafe_allow_html=True)
 
-            c1, c2, c3 = st.columns([2.2, 1, 2.2])
+            # Mobile-friendly column adjustments for result images
+            c1, c2, c3 = st.columns([1, 2, 1] if st.get_option("theme.base") == "light" else [2.2, 1, 2.2])
             with c2:
                 st.markdown("<br>", unsafe_allow_html=True)
                 st.image(sad_img_path, use_container_width=True)
@@ -286,7 +303,7 @@ if analyze:
             </div>
             """, unsafe_allow_html=True)
 
-            c1, c2, c3 = st.columns([2.2, 1, 2.2])
+            c1, c2, c3 = st.columns([1, 2, 1] if st.get_option("theme.base") == "light" else [2.2, 1, 2.2])
             with c2:
                 st.markdown("<br>", unsafe_allow_html=True)
                 st.image(happy_img_path, use_container_width=True)
