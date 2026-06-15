@@ -23,12 +23,14 @@ with top1:
         st.image("lock.jpg", width=45)
 
     with logo2:
+        # Yahan font-size ko clamp aur white-space ko nowrap kiya hai taaki mobile pe 'S' na kate
         st.markdown("""
         <div style="
-            font-size:42px;
-            font-weight:900;
-            margin-top:-15px; 
-            margin-left:-45px; 
+            font-size: clamp(28px, 4vw, 42px); 
+            font-weight: 900;
+            margin-top: -10px; 
+            margin-left: -45px; 
+            white-space: nowrap;
         ">
             <span style="color:#1565C0;">Safe</span><span style="color:#50C878;">Apply</span>
         </div>
