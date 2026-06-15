@@ -13,35 +13,13 @@ st.set_page_config(
 )
 
 # =========================
-# TOP BAR & TOGGLE
-# =========================
-top1, top2 = st.columns([10, 1])
-with top1:
-    logo1, logo2 = st.columns([1, 12])
-
-    with logo1:
-        st.image("lock.jpg", width=45)
-
-    with logo2:
-        # Yahan font-size ko clamp aur white-space ko nowrap kiya hai taaki mobile pe 'S' na kate
-        st.markdown("""
-        <div style="
-            font-size: clamp(28px, 4vw, 42px); 
-            font-weight: 900;
-            margin-top: -10px; 
-            margin-left: -45px; 
-            white-space: nowrap;
-        ">
-            <span style="color:#1565C0;">Safe</span><span style="color:#50C878;">Apply</span>
-        </div>
-        """, unsafe_allow_html=True)
-
-with top2:
-    dark_mode = st.toggle("🌙")
-
-# =========================
 # COLORS
 # =========================
+# Dark mode toggle pehle upar rakh rahe hain taaki variables CSS se pehle mil sakein
+top_col1, top_col2 = st.columns([10, 1])
+with top_col2:
+    dark_mode = st.toggle("🌙")
+
 if dark_mode:
     bg_color = "#0A2342"
     card_bg = "#102A43"
@@ -85,6 +63,23 @@ button[title="View fullscreen"] {
     display: none !important;
 }
 
+/* ============================================================
+   Logo Header Style (Fixes Laptop shifting & Mobile cutting)
+   ============================================================ */
+.logo-container {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 0;
+}
+
+.logo-text {
+    font-size: 42px;
+    font-weight: 900;
+    font-family: sans-serif;
+    white-space: nowrap;
+}
+
 /* Hero Section - Responsive Typography */
 .hero {
     text-align:center;
@@ -92,7 +87,7 @@ button[title="View fullscreen"] {
 }
 
 .hero-title {
-    font-size: clamp(32px, 5vw, 60px); /* Mobile me auto-scale hoga */
+    font-size: clamp(32px, 5vw, 60px); 
     font-weight:900;
     line-height: 1.2;
 }
@@ -100,7 +95,7 @@ button[title="View fullscreen"] {
 .fake { color:#ff69b4; }
 
 .hero-sub {
-    font-size: clamp(14px, 2vw, 20px); /* Mobile me auto-scale hoga */
+    font-size: clamp(14px, 2vw, 20px); 
     font-weight:600;
     margin-top: 8px;
 }
@@ -151,7 +146,7 @@ button[title="View fullscreen"] {
     color:white;
     padding:12px 35px;
     border-radius:15px;
-    font-size: clamp(18px, 4vw, 24px); /* Responsive Result Font */
+    font-size: clamp(18px, 4vw, 24px); 
     font-weight:bold;
     display: inline-block;
     box-shadow: 0px 4px 12px rgba(0,0,0,0.15);
@@ -172,6 +167,13 @@ button[title="View fullscreen"] {
    📱 MOBILE & TABLET RESPONSIVENESS (MEDIA QUERY)
    ============================================================ */
 @media (max-width: 768px) {
+    .logo-container {
+        justify-content: center; /* Mobile pe logo center ho jayega */
+    }
+    .logo-text {
+        font-size: 32px; /* Mobile pe text size proper automatic choti */
+    }
+    
     /* Mobile me side images ko hide karenge taaki layout crush na ho */
     .side-img-wrapper {
         display: none !important;
@@ -190,6 +192,21 @@ button[title="View fullscreen"] {
 }
 </style>
 """, unsafe_allow_html=True)
+
+# =========================
+# TOP BAR LOGO (FIXED SECTION)
+# =========================
+with top_col1:
+    # Ab lock icon aur text ek flexible row me hain, kabhi nahi tootenge ya khiskenge
+    st.markdown("""
+    <div class="logo-container">
+        <img src="app/static/lock.jpg" width="45" height="45" style="border-radius: 8px; object-fit: cover;" 
+             onerror="this.onerror=null; this.src='https://img.icons8.com/fluency/48/shield.png';">
+        <div class="logo-text">
+            <span style="color:#1565C0;">Safe</span><span style="color:#50C878;">Apply</span>
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
 
 # =========================
 # TITLE
@@ -289,8 +306,7 @@ if analyze:
             </div>
             """, unsafe_allow_html=True)
 
-            # Mobile-friendly column adjustments for result images
-            c1, c2, c3 = st.columns([1, 2, 1] if st.get_option("theme.base") == "light" else [2.2, 1, 2.2])
+            c1, c2, c3 = st.columns([2.2, 1, 2.2])
             with c2:
                 st.markdown("<br>", unsafe_allow_html=True)
                 st.image(sad_img_path, use_container_width=True)
@@ -305,7 +321,7 @@ if analyze:
             </div>
             """, unsafe_allow_html=True)
 
-            c1, c2, c3 = st.columns([1, 2, 1] if st.get_option("theme.base") == "light" else [2.2, 1, 2.2])
+            c1, c2, c3 = st.columns([2.2, 1, 2.2])
             with c2:
                 st.markdown("<br>", unsafe_allow_html=True)
                 st.image(happy_img_path, use_container_width=True)
