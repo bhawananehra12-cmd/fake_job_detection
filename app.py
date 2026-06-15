@@ -50,12 +50,12 @@ st.markdown(f"""
 
 st.markdown("""
 <style>
-/* Hide Default Streamlit Elements */
+
 #MainMenu { visibility:hidden; }
 footer { visibility:hidden; }
 header { visibility:hidden; }
 
-/* Disable Click, Hover, and Fullscreen on Images */
+
 [data-testid="stImage"] {
     pointer-events: none !important;
 }
@@ -64,7 +64,7 @@ button[title="View fullscreen"] {
 }
 
 /* ============================================================
-   Logo Header Style (Fixes Laptop shifting & Mobile cutting)
+   Logo Header Style 
    ============================================================ */
 .logo-container {
     display: flex;
@@ -80,7 +80,7 @@ button[title="View fullscreen"] {
     white-space: nowrap;
 }
 
-/* Hero Section - Responsive Typography */
+
 .hero {
     text-align:center;
     padding:10px;
@@ -163,18 +163,16 @@ button[title="View fullscreen"] {
     font-weight:600;
 }
 
-/* ============================================================
-   📱 MOBILE & TABLET RESPONSIVENESS (MEDIA QUERY)
    ============================================================ */
 @media (max-width: 768px) {
     .logo-container {
-        justify-content: center; /* Mobile pe logo center ho jayega */
+        justify-content: center;
     }
     .logo-text {
-        font-size: 32px; /* Mobile pe text size proper automatic choti */
+        font-size: 32px; 
     }
     
-    /* Mobile me side images ko hide karenge taaki layout crush na ho */
+
     .side-img-wrapper {
         display: none !important;
     }
@@ -185,7 +183,7 @@ button[title="View fullscreen"] {
         border-radius: 15px;
     }
     
-    /* Input area height adjusted for mobile screens */
+
     .stTextArea textarea {
         height: 220px !important;
     }
@@ -197,10 +195,10 @@ button[title="View fullscreen"] {
 # TOP BAR LOGO (FIXED SECTION)
 # =========================
 with top_col1:
-    # Ab lock icon aur text ek flexible row me hain, kabhi nahi tootenge ya khiskenge
+
     st.markdown("""
     <div class="logo-container">
-        <img src="app/static/lock.jpg" width="45" height="45" style="border-radius: 8px; object-fit: cover;" 
+        <img src="lock.jpg" width="45" height="45" style="border-radius: 8px; object-fit: cover;" 
              onerror="this.onerror=null; this.src='https://img.icons8.com/fluency/48/shield.png';">
         <div class="logo-text">
             <span style="color:#1565C0;">Safe</span><span style="color:#50C878;">Apply</span>
