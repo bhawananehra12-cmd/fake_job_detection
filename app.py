@@ -2,6 +2,7 @@ import streamlit as st
 import pickle
 import os
 import re
+import base64
 
 # =========================
 # PAGE CONFIG
@@ -15,7 +16,6 @@ st.set_page_config(
 # =========================
 # COLORS
 # =========================
-# Dark mode toggle pehle upar rakh rahe hain taaki variables CSS se pehle mil sakein
 top_col1, top_col2 = st.columns([10, 1])
 with top_col2:
     dark_mode = st.toggle("🌙")
@@ -50,11 +50,9 @@ st.markdown(f"""
 
 st.markdown("""
 <style>
-
 #MainMenu { visibility:hidden; }
 footer { visibility:hidden; }
 header { visibility:hidden; }
-
 
 [data-testid="stImage"] {
     pointer-events: none !important;
@@ -63,9 +61,6 @@ button[title="View fullscreen"] {
     display: none !important;
 }
 
-/* ============================================================
-   Logo Header Style 
-   ============================================================ */
 .logo-container {
     display: flex;
     align-items: center;
@@ -79,7 +74,6 @@ button[title="View fullscreen"] {
     font-family: sans-serif;
     white-space: nowrap;
 }
-
 
 .hero {
     text-align:center;
@@ -100,7 +94,6 @@ button[title="View fullscreen"] {
     margin-top: 8px;
 }
 
-/* Central Layout Elements */
 .glass {
     padding:25px;
     border-radius:25px;
@@ -118,21 +111,18 @@ button[title="View fullscreen"] {
     border:none;
 }
 
-/* Base style for scaling side panels uniformly */
 .side-img-wrapper img {
     border-radius: 12px;
     width: 100% !important;
     height: auto !important;
 }
 
-/* Custom crop specialized exactly to trim fake image from bottom safely */
 .fake-crop-container img {
     object-fit: cover !important;
     object-position: top center !important;
     max-height: 310px !important; 
 }
 
-/* Centering the result container layout wrapper */
 .center-result-box {
     display: flex;
     justify-content: center;
@@ -141,7 +131,6 @@ button[title="View fullscreen"] {
     width: 100%;
 }
 
-/* Moderate Sized Result Layout Cards */
 .real-card-mod, .fake-card-mod {
     color:white;
     padding:12px 35px;
@@ -163,7 +152,6 @@ button[title="View fullscreen"] {
     font-weight:600;
 }
 
-   ============================================================ */
 @media (max-width: 768px) {
     .logo-container {
         justify-content: center;
@@ -171,19 +159,13 @@ button[title="View fullscreen"] {
     .logo-text {
         font-size: 32px; 
     }
-    
-
     .side-img-wrapper {
         display: none !important;
     }
-    
-    /* Padding thodi kam mobile ke liye */
     .glass {
         padding: 15px;
         border-radius: 15px;
     }
-    
-
     .stTextArea textarea {
         height: 220px !important;
     }
@@ -192,14 +174,25 @@ button[title="View fullscreen"] {
 """, unsafe_allow_html=True)
 
 # =========================
-# TOP BAR LOGO (FIXED SECTION)
+# TOP BAR LOGO
 # =========================
 with top_col1:
+    def load_img_base64(path):
+        if os.path.exists(path):
+            with open(path, "rb") as f:
+                return base64.b64encode(f.read()).decode()
+        return None
 
-    st.markdown("""
+    base64_data = load_img_base64("lock.jpg") or load_img_base64("lock.jpeg")
+    
+    if base64_data:
+        src_string = f"data:image/jpeg;base64,{base64_data}"
+    else:
+        src_string = "https://img.icons8.com/fluency/48/lock.png"
+
+    st.markdown(f"""
     <div class="logo-container">
-        <img src="lock.jpg" width="45" height="45" style="border-radius: 8px; object-fit: cover;" 
-             onerror="this.onerror=null; this.src='https://img.icons8.com/fluency/48/shield.png';">
+        <img src="{src_string}" width="45" height="45" style="border-radius: 8px; object-fit: cover;">
         <div class="logo-text">
             <span style="color:#1565C0;">Safe</span><span style="color:#50C878;">Apply</span>
         </div>
@@ -231,7 +224,6 @@ vectorizer = pickle.load(open("vectorizer.pkl", "rb"))
 # =========================
 left, center, right = st.columns([1, 3, 1])
 
-# LEFT IMAGE (REAL JOB)
 with left:
     st.markdown('<div class="side-img-wrapper">', unsafe_allow_html=True)
     if os.path.exists("real.jpg"):
@@ -240,7 +232,6 @@ with left:
         st.image("real.jpeg", use_container_width=True)
     st.markdown('</div>', unsafe_allow_html=True)
 
-# CENTER CARD
 with center:
     st.markdown('<div class="glass">', unsafe_allow_html=True)
     st.markdown(f"<h2 style='text-align:center; color:{heading_color}; margin-top:0;'>Job Description</h2>", unsafe_allow_html=True)
@@ -258,7 +249,6 @@ We are hiring a Python Developer with Django, Machine Learning and Cloud experie
     analyze = st.button("🔍 Analyze Job Posting")
     st.markdown("</div>", unsafe_allow_html=True)
 
-# RIGHT IMAGE (FAKE JOB WITH CROP wrapper)
 with right:
     st.markdown('<div class="side-img-wrapper fake-crop-container">', unsafe_allow_html=True)
     if os.path.exists("fake.jpg"):
@@ -274,16 +264,11 @@ if analyze:
     if not job_text.strip():
         st.warning("Please enter job description.")
     else:
-        # ============================================================
-        # TEXT PREPROCESSING 
-        # ============================================================
         cleaned_text = job_text.strip().lower()
         
-        # Vectorization and prediction pipeline
         data = vectorizer.transform([cleaned_text])
         prediction = model.predict(data)
         
-        # DEBUG PRINTS FOR TERMINAL
         print("\n=== SAFEAPPLY ML DEBUGGER ===")
         print(f"Raw Prediction Output: {prediction[0]}")
         print(f"Matrix Token Sum: {data.sum()}")
@@ -294,7 +279,6 @@ if analyze:
         sad_img_path = "sad.jpg" if os.path.exists("sad.jpg") else "sad.jpeg"
         happy_img_path = "happy.jpg" if os.path.exists("happy.jpg") else "happy.jpeg"
 
-        # 1 = FAKE (Fraudulent) job
         if prediction[0] == 1:
             st.markdown("""
             <div class="center-result-box">
@@ -309,7 +293,6 @@ if analyze:
                 st.markdown("<br>", unsafe_allow_html=True)
                 st.image(sad_img_path, use_container_width=True)
 
-        # 0 = REAL job
         elif prediction[0] == 0:
             st.markdown("""
             <div class="center-result-box">
